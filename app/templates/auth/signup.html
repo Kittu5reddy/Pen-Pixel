@@ -82,7 +82,11 @@
                     form.occupation(class="form-contro-inline form-control-lg")
                     }}
                   </div>
+                  {% if message %}
 
+                  <h5>{{message}} please login</h5>
+                  <a href="{{ url_for('main.loginPage' ) }}">Login</a>
+                  {% endif %}
                   <div class="d-flex justify-content-between">
                     <button type="reset" class="btn btn-secondary btn-lg">
                       Reset

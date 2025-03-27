@@ -77,6 +77,8 @@ def signuPage():
     form=SignupForm()
     if request.method=="POST":
         if form.validate():
+            if User.query.filter(User.email=="22eg107c61@anurag.edu.in").first():
+                return render_template('auth/signup.html',form=form,message='user exit')
             user=User(first_name=form.first_name.data,last_name=form.last_name.data,email=form.email.data,gender=form.gender.data,dob=form.dob.data,pincode=form.pincode.data,occupation=form.occupation.data)
             db.session.add(user)
             db.session.commit()
