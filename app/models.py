@@ -1,36 +1,28 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
-csrf=CSRFProtect()
-db=SQLAlchemy()
+from flask_login import UserMixin
+import uuid
 
+csrf = CSRFProtect()
+db = SQLAlchemy()
 
+class User(db.Model, UserMixin):
+    id = db.Column(db.String(36), primary_key=True, default= str(uuid.uuid4()))  # ✅ Uses UUID as primary key
+    first_name = db.Column(db.String(120), nullable=False)
+    last_name = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)  # ✅ Email must be unique and NOT NULL
+    password = db.Column(db.String(255), nullable=False)  # ✅ Increased password length for security
+    gender = db.Column(db.String(10), nullable=False)
+    dob = db.Column(db.Date, nullable=False)
+    pincode = db.Column(db.Integer, nullable=False)
+    occupation = db.Column(db.String(120), nullable=False)
 
+    def get_id(self):
+        return str(self.id)  # ✅ Flask-Login requires get_id() to return a string
 
+    def __repr__(self):
+        return f'<User {self.email}>'  # ✅ Fixed __repr__
 
-
-
-
-
-class User(db.Model):
-    def __init__(self,first_name,last_name,email,gender,dob,pincode,occupation,password):
-        self.first_name=first_name
-        self.last_name=last_name
-        self.email=email
-        self.gender=gender
-        self.dob=dob
-        self.pincode=pincode
-        self.occupation=occupation
-        self.password=password
-    first_name=db.Column(db.String(120),nullable=False)
-    last_name=db.Column(db.String(120),nullable=False)
-    email=db.Column(db.String(120),primary_key=True)
-    password=db.Column(db.String(120))
-    gender=db.Column(db.String(120),nullable=False)
-    dob=db.Column(db.String(120),nullable=False)
-    pincode=db.Column(db.Integer,nullable=False)
-    occupation=db.Column(db.String(120),nullable=False)
-    def repr(self):
-        return str(self.email)
 #forms
 from flask_wtf import FlaskForm  # Import FlaskForm instead of Form
 from wtforms import StringField, PasswordField, RadioField, DateField, IntegerField, validators
