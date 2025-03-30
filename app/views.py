@@ -3,35 +3,47 @@ from .models import User, SignupForm, LoginForm, db
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, LoginManager, login_user, logout_user, current_user
 
-login_manager = LoginManager()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+login_manager = LoginManager()
 main = Blueprint('main', __name__, url_prefix='/')
 bcrypt = Bcrypt()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#auth
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.filter_by(email=user_id).first()  # ✅ FIXED
+    return User.query.filter_by(id=user_id).first() 
+
 
 @login_manager.unauthorized_handler
 def unauthorized():
     return render_template('unauth.html')
-
-@main.route('/')
-def homePage():
-    return render_template('main/home.html')
-
-@main.route('/about')
-def aboutPage():
-    return render_template('main/about.html')
-
-@main.route('/contact')
-def contactPage():
-    return render_template('main/contact.html')
-
-@main.route('/dashboard/profile')
-@login_required
-def dashboard():
-    return render_template('dashboard/profile.html')
 
 # Login Route
 @main.route('/login', methods=["GET", "POST"])
@@ -41,9 +53,9 @@ def loginPage():
         email = form.email.data
         password = form.password.data
         user = User.query.filter_by(email=email).first()
-
         if user and bcrypt.check_password_hash(user.password, password):
-            login_user(user.id)  
+            login_user(user)
+            session['user']=user.first_name  
             return redirect(url_for('main.dashboard'))
         return render_template('auth/login.html', form=form, message="Invalid Credentials")
     
@@ -81,3 +93,24 @@ def logout():
     logout_user()  
     session.clear()  
     return redirect(url_for('main.loginPage'))
+
+
+
+
+
+@main.route('/')
+def homePage():
+    return render_template('main/home.html')
+
+@main.route('/about')
+def aboutPage():
+    return render_template('main/about.html')
+
+@main.route('/contact')
+def contactPage():
+    return render_template('main/contact.html')
+
+@main.route('/dashboard/profile')
+@login_required
+def dashboard():
+    return render_template('dashboard/profile.html')
