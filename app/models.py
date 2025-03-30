@@ -3,28 +3,16 @@ from flask_wtf.csrf import CSRFProtect
 csrf=CSRFProtect()
 db=SQLAlchemy()
 
-class User(db.Model):
-    full_name=db.Column(db.String(120),nullable=False)
-    last_name=db.Column(db.String(120),nullable=False)
-    username=db.Column(db.String(120),nullable=False)
-    email=db.Column(db.String(120),primary_key=True)
-    gender=db.Column(db.String(120),nullable=False)
-    dob=db.Column(db.String(120),nullable=False)
-    pincode=db.Column(db.Integer,nullable=False)
-    occupation=db.Column(db.String(120),nullable=False)
-    
-    
 
 
 
 
-from flask_sqlalchemy import SQLAlchemy
-from flask_wtf.csrf import CSRFProtect
-csrf=CSRFProtect()
-db=SQLAlchemy()
+
+
+
 
 class User(db.Model):
-    def __init__(self,first_name,last_name,email,gender,dob,pincode,occupation):
+    def __init__(self,first_name,last_name,email,gender,dob,pincode,occupation,password):
         self.first_name=first_name
         self.last_name=last_name
         self.email=email
@@ -32,9 +20,11 @@ class User(db.Model):
         self.dob=dob
         self.pincode=pincode
         self.occupation=occupation
+        self.password=password
     first_name=db.Column(db.String(120),nullable=False)
     last_name=db.Column(db.String(120),nullable=False)
     email=db.Column(db.String(120),primary_key=True)
+    password=db.Column(db.String(120))
     gender=db.Column(db.String(120),nullable=False)
     dob=db.Column(db.String(120),nullable=False)
     pincode=db.Column(db.Integer,nullable=False)

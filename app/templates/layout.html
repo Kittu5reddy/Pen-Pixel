@@ -50,12 +50,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Navbar brand -->
             <a class="navbar-brand mt-2 mt-lg-0" href="#">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-                height="15"
-                alt="MDB Logo"
-                loading="lazy"
-              />
+              <img src="" height="15" alt="pic" loading="lazy" />
             </a>
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -111,7 +106,7 @@
                 </li>
               </ul>
             </div>
-            {% if True %}
+            {% if not session['user'] %}
             <a class="text-reset me-1" href="{{ url_for('main.signuPage' ) }}">
               <button class="btn btn-primary">Signup</button>
             </a>
@@ -119,11 +114,7 @@
             {% endif %}
 
             <!-- Avatar -->
-            {% if True %}
-            <a href="{{ url_for('main.loginPage' ) }}"
-              ><button class="btn btn-success">Login</button></a
-            >
-            {% else %}
+            {% if session['user'] %}
             <div class="dropdown">
               <a
                 data-mdb-dropdown-init
@@ -152,10 +143,17 @@
                   <a class="dropdown-item" href="#">Settings</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#">Logout</a>
+                  <a class="dropdown-item" href="{{url_for('main.logout')}}"
+                    >Logout</a
+                  >
                 </li>
               </ul>
             </div>
+
+            {% else %}
+            <a href="{{ url_for('main.loginPage' ) }}"
+              ><button class="btn btn-success">Login</button></a
+            >
             {% endif %}
           </div>
           <!-- Right elements -->
